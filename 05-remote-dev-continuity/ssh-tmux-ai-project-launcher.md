@@ -247,7 +247,7 @@ prompt_task_name() {
   if [ -n "$task_name" ]; then
     raw="$task_name"
   else
-    printf "Task name (letters, numbers, dash, underscore): "
+    printf "Task name (letters, numbers, dash, underscore): " >&2
     read -r raw
   fi
 
@@ -311,7 +311,8 @@ delete_task_session() {
 
 run_ai_mode() {
   local ai="$1"
-  local command="$2"
+  local main_command="$2"
+  local task_command="$3"
   local main_session="${name}-${ai}"
   local task_session=""
   local task_slug=""
@@ -324,13 +325,13 @@ run_ai_mode() {
 
   case "$action" in
     ""|1|main)
-      ensure_session "$main_session" "$ai" "$command"
+      ensure_session "$main_session" "$ai" "$main_command"
       attach_session "$main_session"
       ;;
     2|new|new-task|task)
       task_slug="$(prompt_task_name)"
       task_session="${name}-${ai}-task-${task_slug}"
-      ensure_session "$task_session" "$ai" "$command"
+      ensure_session "$task_session" "$ai" "$task_command"
       attach_session "$task_session"
       ;;
     3|delete|delete-task|rm)
@@ -363,10 +364,10 @@ case "$mode" in
     exec tmux new -As "$name" -c "$dir"
     ;;
   2|claude)
-    run_ai_mode "claude" 'claude --permission-mode bypassPermissions -c'
+    run_ai_mode "claude" 'claude --permission-mode bypassPermissions -c' 'claude --permission-mode bypassPermissions'
     ;;
   3|codex)
-    run_ai_mode "codex" 'codex resume --last --all'
+    run_ai_mode "codex" 'codex resume --last --all' 'codex'
     ;;
   -h|--help|help)
     cat <<'EOF'
