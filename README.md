@@ -58,6 +58,7 @@
 |---|---|
 | [SSH Basic Operations](05-remote-dev-continuity/ssh-basic-operations.md) | SSH 基礎操作、key、config、scp、遠端指令 |
 | [SSH + tmux Persistent Session](05-remote-dev-continuity/ssh-tmux-persistent-session.md) | 用 tmux 保持遠端 AI 長任務不中斷 |
+| [SSH + tmux AI Project Launcher](05-remote-dev-continuity/ssh-tmux-ai-project-launcher.md) | SSH 進主機後用 `projects` / `proj` 選專案、分開 Claude/Codex tmux session、建立與刪除 AI task |
 
 ### 06. Platform Limitations
 
@@ -91,7 +92,8 @@ my-devops-playbook/
 │   └── claude-codex-review-workflow.md
 ├── 05-remote-dev-continuity/
 │   ├── ssh-basic-operations.md
-│   └── ssh-tmux-persistent-session.md
+│   ├── ssh-tmux-persistent-session.md
+│   └── ssh-tmux-ai-project-launcher.md
 ├── 06-platform-limitations/
 │   └── xcode-wireless-deploy-limitation.md
 └── docs/
