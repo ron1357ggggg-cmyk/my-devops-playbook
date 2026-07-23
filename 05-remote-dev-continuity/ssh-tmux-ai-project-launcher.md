@@ -12,6 +12,21 @@
 - 每個 AI 都可以建立獨立 `NEW TASK` session。
 - `Delete task` 只能刪 task session，不能刪主 AI session。
 
+## 本次實作版本紀錄
+
+這份 SOP 來自一次實際 SSH/tmux/Codex/Claude launcher 調整，最後確認採用以下行為：
+
+1. 專案 shell、Claude main、Codex main 全部分成不同 tmux session。
+2. Claude 與 Codex 不能共用同一個 tmux session，也不要只用同 session 的不同 window 區分。
+3. `NEW TASK` 每次都要建立新的 tmux session，不可因為同名 task 已存在就 attach 舊 session。
+4. 如果 task 名稱重複，自動加序號，例如 `test1`、`test1-2`、`test1-3`。
+5. AI 子選單要列出已存在的 task，讓使用者可以直接選回舊 task。
+6. AI 子選單順序固定為：`Main <ai>`、既有 task 清單、`NEW TASK`、`Delete task`。
+7. `Delete task` 只能列出並刪除 `<alias>-<ai>-task-*`，不能列出或刪除 `<alias>-claude` / `<alias>-codex`。
+8. 已在 tmux 內執行 `proj` 時，用 `tmux switch-client`；一般 SSH shell 才用 `tmux attach`。
+9. 主 AI session 用 resume 指令保留長期上下文；`NEW TASK` 用 fresh 啟動指令建立新的 AI 任務。
+10. `prompt_task_name()` 這類函式若用 command substitution 接回傳值，提示文字必須輸出到 stderr，stdout 只能輸出乾淨的 task slug。
+
 ## 1. 設計原則
 
 不要把同一專案的 Claude 與 Codex 放在同一個 tmux session 裡。
