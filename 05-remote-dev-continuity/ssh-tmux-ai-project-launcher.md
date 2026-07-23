@@ -275,29 +275,44 @@ prompt_task_name() {
 
 show_ai_menu() {
   local ai="$1"
+  shift
+  local sessions=("$@")
+  local index=2
+  local prefix="${name}-${ai}-task-"
+  local label=""
 
-  cat <<EOF
-Select ${ai} task:
-1) Main ${ai}
-2) NEW TASK
-3) Delete task
-EOF
+  echo "Select ${ai} task:"
+  echo "1) Main ${ai}"
+
+  for session in "${sessions[@]}"; do
+    label="${session#"$prefix"}"
+    printf "%s) %s\n" "$index" "$label"
+    index=$((index + 1))
+  done
+
+  printf "%s) NEW TASK\n" "$index"
+  index=$((index + 1))
+  printf "%s) Delete task\n" "$index"
+}
+
+list_task_sessions() {
+  local ai="$1"
+  local prefix="${name}-${ai}-task-"
+
+  tmux list-sessions -F '#S' 2>/dev/null | while IFS= read -r session; do
+    case "$session" in
+      "$prefix"*) printf '%s\n' "$session" ;;
+    esac
+  done
 }
 
 delete_task_session() {
   local ai="$1"
-  local prefix="${name}-${ai}-task-"
   local sessions=()
   local choice=""
   local index=1
 
-  mapfile -t sessions < <(
-    tmux list-sessions -F '#S' 2>/dev/null | while IFS= read -r session; do
-      case "$session" in
-        "$prefix"*) printf '%s\n' "$session" ;;
-      esac
-    done
-  )
+  mapfile -t sessions < <(list_task_sessions "$ai")
 
   if [ "${#sessions[@]}" -eq 0 ]; then
     echo "No ${ai} task sessions found for ${name}."
@@ -329,11 +344,38 @@ run_ai_mode() {
   local main_session="${name}-${ai}"
   local task_session=""
   local task_slug=""
+  local task_sessions=()
+  local new_index=0
+  local delete_index=0
 
   if [ "$interactive" -eq 1 ] && [ -z "$action" ]; then
-    show_ai_menu "$ai"
+    mapfile -t task_sessions < <(list_task_sessions "$ai")
+    show_ai_menu "$ai" "${task_sessions[@]}"
     printf "Task option: "
     read -r action
+  fi
+
+  if [[ "$action" =~ ^[0-9]+$ ]]; then
+    if [ "$action" -eq 1 ]; then
+      action="main"
+    else
+      if [ "${#task_sessions[@]}" -eq 0 ]; then
+        mapfile -t task_sessions < <(list_task_sessions "$ai")
+      fi
+
+      if [ "$action" -ge 2 ] && [ "$action" -le $((${#task_sessions[@]} + 1)) ]; then
+        attach_session "${task_sessions[$((action - 2))]}"
+      fi
+
+      new_index=$((${#task_sessions[@]} + 2))
+      delete_index=$((${#task_sessions[@]} + 3))
+
+      if [ "$action" -eq "$new_index" ]; then
+        action="new"
+      elif [ "$action" -eq "$delete_index" ]; then
+        action="delete"
+      fi
+    fi
   fi
 
   case "$action" in
@@ -351,7 +393,8 @@ run_ai_mode() {
       delete_task_session "$ai"
       ;;
     -h|--help|help)
-      show_ai_menu "$ai"
+      mapfile -t task_sessions < <(list_task_sessions "$ai")
+      show_ai_menu "$ai" "${task_sessions[@]}"
       ;;
     *)
       echo "Unknown task option: $action" >&2
