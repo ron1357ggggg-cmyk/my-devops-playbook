@@ -234,6 +234,19 @@ ensure_session() {
   fi
 }
 
+next_task_session_name() {
+  local base="$1"
+  local candidate="$base"
+  local index=2
+
+  while tmux has-session -t "$candidate" 2>/dev/null; do
+    candidate="${base}-${index}"
+    index=$((index + 1))
+  done
+
+  printf '%s' "$candidate"
+}
+
 sanitize_task_name() {
   printf '%s' "$1" \
     | tr '[:upper:]' '[:lower:]' \
@@ -330,8 +343,8 @@ run_ai_mode() {
       ;;
     2|new|new-task|task)
       task_slug="$(prompt_task_name)"
-      task_session="${name}-${ai}-task-${task_slug}"
-      ensure_session "$task_session" "$ai" "$task_command"
+      task_session="$(next_task_session_name "${name}-${ai}-task-${task_slug}")"
+      tmux new-session -Ad -s "$task_session" -n "$ai" -c "$dir" "$task_command"
       attach_session "$task_session"
       ;;
     3|delete|delete-task|rm)
