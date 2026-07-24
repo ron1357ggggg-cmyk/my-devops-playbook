@@ -2,7 +2,7 @@
 
 這份文件記錄一套可複製到新電腦的 SSH / tmux / AI CLI 工作流，處理「遠端環境下怎麼進到正確專案並啟動對應 AI」。
 
-tmux / SSH 連線本身的基礎操作與斷線續命機制見 [05. Remote Dev Continuity](../05-remote-dev-continuity/ssh-tmux-persistent-session.md)；本機（非 SSH）情境的專案入口見同章節的 [Auto Enter Project Path](auto-enter-project-path.md)。
+執行這套流程前，先確認 SSH 連線已建好、tmux 已裝好：見 [SSH Basic Operations](ssh-basic-operations.md)、[SSH + tmux Persistent Session](ssh-tmux-persistent-session.md)；本機（非 SSH）情境的專案入口見 [Auto Enter Project Path](auto-enter-project-path.md)。
 
 目標：
 
