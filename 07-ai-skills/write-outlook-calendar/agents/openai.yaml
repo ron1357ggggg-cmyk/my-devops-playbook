@@ -1,0 +1,3 @@
+display_name: Write Outlook Calendar
+short_description: Add private events to Outlook.
+default_prompt: Use this skill to turn text or screenshots into private Outlook calendar events, write them through Outlook Calendar when possible, and create an ICS fallback if login or browser automation blocks the save.

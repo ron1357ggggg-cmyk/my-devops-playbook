@@ -66,6 +66,12 @@
 |---|---|
 | [Xcode Wireless Deploy Limitation](06-platform-limitations/xcode-wireless-deploy-limitation.md) | Xcode 透過 Wi-Fi / Tailscale 部署 iPhone 的限制邊界 |
 
+### 07. AI Skills
+
+| 文件 | 用途 |
+|---|---|
+| [Write Outlook Calendar](07-ai-skills/write-outlook-calendar/README.md) | 可攜式 AI skill：把聊天內容/截圖轉成 Outlook 私人行事曆事件，含 Claude Code（`SKILL.md`）與 OpenAI agent（`agents/openai.yaml`）兩種格式 |
+
 ### Legacy / Existing Docs
 
 | 文件 | 用途 |
@@ -96,6 +102,12 @@ my-devops-playbook/
 │   └── ssh-tmux-ai-project-launcher.md
 ├── 06-platform-limitations/
 │   └── xcode-wireless-deploy-limitation.md
+├── 07-ai-skills/
+│   └── write-outlook-calendar/
+│       ├── README.md
+│       ├── SKILL.md
+│       └── agents/
+│           └── openai.yaml
 └── docs/
     └── mac-ssh-tmux-remote-sop.md
 ```
