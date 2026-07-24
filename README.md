@@ -59,6 +59,7 @@
 | [SSH Basic Operations](05-remote-dev-continuity/ssh-basic-operations.md) | SSH 基礎操作、key、config、scp、遠端指令 |
 | [SSH + tmux Persistent Session](05-remote-dev-continuity/ssh-tmux-persistent-session.md) | 用 tmux 保持遠端 AI 長任務不中斷 |
 | [SSH + tmux AI Project Launcher](05-remote-dev-continuity/ssh-tmux-ai-project-launcher.md) | SSH 進主機後用 `projects` / `proj` 選專案、分開 Claude/Codex tmux session、建立與刪除 AI task |
+| [Windows OpenSSH Server + WSL tmux Setup](05-remote-dev-continuity/windows-openssh-wsl-setup.md) | Windows 11 安裝 OpenSSH Server、WSL Ubuntu + tmux，讓 Windows 也能當遠端 AI 節點 |
 
 ### 06. Platform Limitations
 
@@ -71,12 +72,6 @@
 | 文件 | 用途 |
 |---|---|
 | [Write Outlook Calendar](07-ai-skills/write-outlook-calendar/README.md) | 可攜式 AI skill：把聊天內容/截圖轉成 Outlook 私人行事曆事件，含 Claude Code（`SKILL.md`）與 OpenAI agent（`agents/openai.yaml`）兩種格式 |
-
-### Legacy / Existing Docs
-
-| 文件 | 用途 |
-|---|---|
-| [Mac SSH tmux Remote SOP](docs/mac-ssh-tmux-remote-sop.md) | 既有 Mac 遠端 SSH + tmux 設定 SOP |
 
 ## 目錄結構
 
@@ -99,17 +94,16 @@ my-devops-playbook/
 ├── 05-remote-dev-continuity/
 │   ├── ssh-basic-operations.md
 │   ├── ssh-tmux-persistent-session.md
-│   └── ssh-tmux-ai-project-launcher.md
+│   ├── ssh-tmux-ai-project-launcher.md
+│   └── windows-openssh-wsl-setup.md
 ├── 06-platform-limitations/
 │   └── xcode-wireless-deploy-limitation.md
-├── 07-ai-skills/
-│   └── write-outlook-calendar/
-│       ├── README.md
-│       ├── SKILL.md
-│       └── agents/
-│           └── openai.yaml
-└── docs/
-    └── mac-ssh-tmux-remote-sop.md
+└── 07-ai-skills/
+    └── write-outlook-calendar/
+        ├── README.md
+        ├── SKILL.md
+        └── agents/
+            └── openai.yaml
 ```
 
 ## 核心原則
