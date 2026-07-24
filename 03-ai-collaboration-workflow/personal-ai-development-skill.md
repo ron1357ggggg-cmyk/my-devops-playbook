@@ -765,7 +765,7 @@ AGENTS.md
 
 | 角色 | 責任 | 禁止事項 |
 |---|---|---|
-| Claude | 需求理解、修改程式、執行測試、整理交付 | commit / push 是否自動做依 [AI General Rules](../03-ai-permission-governance/ai-general-rules.md) 的 SKILL 授權規則 |
+| Claude | 需求理解、修改程式、執行測試、整理交付 | commit / push 是否自動做依 [AI General Rules](../01-ai-permission-governance/ai-general-rules.md) 的 SKILL 授權規則 |
 | Codex | 審查 git diff、指出風險、提出修正建議 | 審查模式不得修改檔案 |
 | Human | 定義任務、授權權限、判斷是否交付 | 不應跳過驗收 |
 

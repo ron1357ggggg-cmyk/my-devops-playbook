@@ -1,6 +1,6 @@
 # Environment Bootstrap Checklist
 
-這份清單用來檢查新電腦、新專案或遠端主機是否已具備 AI 輔助開發的最低作戰能力。
+這份清單用來檢查新電腦、新專案或遠端主機是否已具備 AI 輔助開發的最低作戰能力，橫跨本章節（AI CLI 安裝）到 [01. AI Permission Governance](../01-ai-permission-governance/ai-general-rules.md)、[02. Project Entry & Remote Dev](../02-project-entry-and-remote-dev/github-project-discovery.md) 的檢查項目。
 
 ## 1. 基礎工具
 
@@ -28,7 +28,7 @@ ssh -T git@github.com
 - [ ] Codex CLI 可啟動
 - [ ] Claude CLI 可啟動
 - [ ] AI CLI 可以讀取目前專案資料夾
-- [ ] AI CLI 可以修改檔案，但不得自行 commit / push
+- [ ] AI CLI 可以自由讀取/修改檔案；commit / push 是否自動做，依當下 SKILL.md 規定
 - [ ] AI CLI 權限模式已理解
 
 ```bash
@@ -68,7 +68,7 @@ tmux attach -t ai-work
 - [ ] AI 修改前先閱讀專案結構
 - [ ] AI 修改後必須說明驗證方式
 - [ ] AI 不得未測試就宣稱完成
-- [ ] AI 不得自動 commit / push，除非明確授權
+- [ ] commit / push 是否自動做，依當下 SKILL.md 規定；沒有規定就先問過我
 
 ## 7. 開工判斷
 

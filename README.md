@@ -6,36 +6,40 @@
 
 它不是用來記錄所有零碎 bug，而是沉澱「AI 開始協助開發之前，人類必須先準備好的基礎設施、權限、操作流程與限制邊界」。
 
+核心流程只有一句話：**裝好兩個 AI → 開放全域權限 → 設定 SSH + tmux，分專案分任務。**
+
 ## 核心定位
 
-- Codex CLI / Claude CLI 安裝與啟動
-- 開發環境啟動前檢查
-- 專案入口與遠端開發環境（本機路徑、GitHub、SSH / tmux、proj launcher）
-- AI 權限治理與通用規則
-- Claude / Codex 交叉驗證工作流
+- Codex CLI / Claude CLI 安裝與環境檢查
+- AI 權限治理：全域最大權限，commit/push 交給 SKILL 決定
+- 專案入口與遠端開發環境（本機路徑、GitHub、SSH / tmux、proj launcher、獨立任務）
+- Claude / Codex 協作與交叉驗證工作流
 - Apple 平台（Xcode / iPhone Wi-Fi）部署限制邊界
 
 ## 快速入口
 
 ### 00. AI CLI Installation
 
-新環境的第一件事：先把 AI CLI 裝起來，後面所有流程都靠它執行。
+新環境的第一件事：先把兩個 AI CLI 都裝起來，再用清單確認整條後續流程（權限、SSH、專案入口）具備最低作戰能力。
 
 | 文件 | 用途 |
 |---|---|
 | [Install Codex CLI](00-ai-cli-installation/install-codex-cli.md) | 安裝與啟動 OpenAI Codex CLI |
 | [Install Claude CLI](00-ai-cli-installation/install-claude-cli.md) | 安裝與啟動 Claude Code / Claude CLI |
+| [Environment Bootstrap Checklist](00-ai-cli-installation/environment-bootstrap-checklist.md) | 新電腦/新環境開工前檢查表，涵蓋基礎工具、SSH、AI CLI、專案入口、遠端長任務、安全治理 |
 
-### 01. Bootstrap
+### 01. AI Permission Governance
+
+裝完 AI 馬上做的第二件事：開放全域最大權限。哲學：讀檔/改檔/執行指令/測試預設全開，不逐項卡確認；真正需要收斂的是 commit / push 這類影響共享狀態的動作，這類授權寫在各自的 SKILL.md 裡，不在這裡做全域硬性規定。
 
 | 文件 | 用途 |
 |---|---|
-| [Environment Bootstrap Checklist](01-bootstrap/environment-bootstrap-checklist.md) | 新電腦、新環境、新專案開工前檢查表 |
-| [AI Task Prompt Template](01-bootstrap/ai-task-prompt-template.md) | 給 Claude / Codex / AI coding agent 的任務啟動模板 |
+| [AI General Rules](01-ai-permission-governance/ai-general-rules.md) | AI 協作基本憲法：全域最大權限 + commit/push 交給 SKILL 決定 |
+| [AI CLI Permissions](01-ai-permission-governance/ai-cli-permissions.md) | 權限類型、風險分級、常見權限異常排查 |
 
 ### 02. Project Entry & Remote Dev
 
-「AI 進新環境後，第一步永遠是先確認專案在哪、環境有沒有搭好」——這一章把本機專案入口跟遠端 SSH/tmux 開發環境放在同一個地方，照實際依賴順序排列：本機入口 → SSH 基礎 → tmux 續命 → Windows/WSL 設定 → proj launcher 與獨立任務。
+第三件事：設定 SSH + tmux，把工作拆成一個個獨立的專案/任務 session。這一章把本機專案入口跟遠端 SSH/tmux 開發環境放在一起，照實際依賴順序排列：本機入口 → SSH 基礎 → tmux 續命 → Windows/WSL 設定 → proj launcher 與獨立任務。
 
 | 文件 | 用途 |
 |---|---|
@@ -44,38 +48,29 @@
 | [SSH Basic Operations](02-project-entry-and-remote-dev/ssh-basic-operations.md) | SSH 基礎操作、key、config、scp、遠端指令 |
 | [SSH + tmux Persistent Session](02-project-entry-and-remote-dev/ssh-tmux-persistent-session.md) | 用 tmux 保持遠端 AI 長任務不中斷 |
 | [Windows OpenSSH Server + WSL tmux Setup](02-project-entry-and-remote-dev/windows-openssh-wsl-setup.md) | Windows 11 安裝 OpenSSH Server、WSL Ubuntu + tmux，讓 Windows 也能當遠端 AI 節點 |
-| [SSH + tmux AI Project Launcher](02-project-entry-and-remote-dev/ssh-tmux-ai-project-launcher.md) | 遠端：SSH 進主機後用 `projects` / `proj` 選專案、分開 Claude/Codex tmux session、建立與刪除 AI task |
+| [SSH + tmux AI Project Launcher](02-project-entry-and-remote-dev/ssh-tmux-ai-project-launcher.md) | 遠端：SSH 進主機後用 `projects` / `proj` 選專案、分開 Claude/Codex tmux session、建立與刪除獨立 AI task |
 
-### 03. AI Permission Governance
-
-哲學：全域預設開放最大權限（讀檔/改檔/執行指令/測試），不逐項卡確認。真正需要收斂的是 commit / push 這類影響共享狀態的動作，這類授權寫在各自的 SKILL.md 裡，不在這裡做全域硬性規定。
+### 03. AI Collaboration Workflow
 
 | 文件 | 用途 |
 |---|---|
-| [AI CLI Permissions](03-ai-permission-governance/ai-cli-permissions.md) | 權限類型、風險分級、常見權限異常排查 |
-| [AI General Rules](03-ai-permission-governance/ai-general-rules.md) | AI 協作基本憲法：全域最大權限 + commit/push 交給 SKILL 決定 |
+| [Personal AI Development Skill](03-ai-collaboration-workflow/personal-ai-development-skill.md) | 跨專案通用的 AI 協作 Skill：專案偵察、任務前後回報格式、文件成熟度分級、技術棧模板、參數流向追蹤、跨專案污染防火牆，並附錄 Claude 主控 / Codex 審查交叉驗證流程 |
 
-### 04. AI Collaboration Workflow
+### 04. Apple Platform Limitations
 
-| 文件 | 用途 |
-|---|---|
-| [Personal AI Development Skill](04-ai-collaboration-workflow/personal-ai-development-skill.md) | 跨專案通用的 AI 協作 Skill：專案偵察、任務前後回報格式、文件成熟度分級、技術棧模板、參數流向追蹤、跨專案污染防火牆，並附錄 Claude 主控 / Codex 審查交叉驗證流程 |
-
-### 05. Apple Platform Limitations
-
-專屬 Apple 生態系（Xcode / iOS / macOS）的部署與能力邊界，其他平台的限制不放這裡。
+專屬 Apple 生態系（Xcode / iOS / macOS）的部署與能力邊界，其他平台的限制不放這裡。獨立於上面的通用流程之外。
 
 | 文件 | 用途 |
 |---|---|
-| [Xcode Wireless Deploy Limitation](05-apple-platform-limitations/xcode-wireless-deploy-limitation.md) | Xcode 透過 Wi-Fi / Tailscale 部署 iPhone 的限制邊界 |
+| [Xcode Wireless Deploy Limitation](04-apple-platform-limitations/xcode-wireless-deploy-limitation.md) | Xcode 透過 Wi-Fi / Tailscale 部署 iPhone 的限制邊界 |
 
-### 06. AI Skills
+### 05. AI Skills
 
 獨立於上面的通用流程之外，收放單一功能、可攜式的 AI skill。
 
 | 文件 | 用途 |
 |---|---|
-| [Write Outlook Calendar](06-ai-skills/write-outlook-calendar/README.md) | 可攜式 AI skill：把聊天內容/截圖轉成 Outlook 私人行事曆事件，含 Claude Code（`SKILL.md`）與 OpenAI agent（`agents/openai.yaml`）兩種格式 |
+| [Write Outlook Calendar](05-ai-skills/write-outlook-calendar/README.md) | 可攜式 AI skill：把聊天內容/截圖轉成 Outlook 私人行事曆事件，含 Claude Code（`SKILL.md`）與 OpenAI agent（`agents/openai.yaml`）兩種格式 |
 
 ## 目錄結構
 
@@ -83,10 +78,11 @@
 my-devops-playbook/
 ├── 00-ai-cli-installation/
 │   ├── install-codex-cli.md
-│   └── install-claude-cli.md
-├── 01-bootstrap/
-│   ├── environment-bootstrap-checklist.md
-│   └── ai-task-prompt-template.md
+│   ├── install-claude-cli.md
+│   └── environment-bootstrap-checklist.md
+├── 01-ai-permission-governance/
+│   ├── ai-general-rules.md
+│   └── ai-cli-permissions.md
 ├── 02-project-entry-and-remote-dev/
 │   ├── github-project-discovery.md
 │   ├── auto-enter-project-path.md
@@ -94,14 +90,11 @@ my-devops-playbook/
 │   ├── ssh-tmux-persistent-session.md
 │   ├── windows-openssh-wsl-setup.md
 │   └── ssh-tmux-ai-project-launcher.md
-├── 03-ai-permission-governance/
-│   ├── ai-cli-permissions.md
-│   └── ai-general-rules.md
-├── 04-ai-collaboration-workflow/
+├── 03-ai-collaboration-workflow/
 │   └── personal-ai-development-skill.md
-├── 05-apple-platform-limitations/
+├── 04-apple-platform-limitations/
 │   └── xcode-wireless-deploy-limitation.md
-└── 06-ai-skills/
+└── 05-ai-skills/
     └── write-outlook-calendar/
         ├── README.md
         ├── SKILL.md
@@ -123,27 +116,22 @@ my-devops-playbook/
 2. 所有指令預設使用 placeholder，例如 `<USER>`、`<HOST>`、`<PROJECT_PATH>`。
 3. 文件重點是建立可重複、可移交、可驗證的工作流。
 4. AI 可以協助解單點問題，但這個 repo 要保存的是架構型知識。
-5. 全域權限預設最大化，只有 commit/push 與破壞性操作需要額外把關（見 03）。
+5. 全域權限預設最大化，只有 commit/push 與破壞性操作需要額外把關（見 01）。
 
 ## 使用建議
 
-新電腦或新環境時，先看：
+新電腦或新環境時，依序看：
 
-- [Install Codex CLI](00-ai-cli-installation/install-codex-cli.md) / [Install Claude CLI](00-ai-cli-installation/install-claude-cli.md)
-- [Environment Bootstrap Checklist](01-bootstrap/environment-bootstrap-checklist.md)
+1. [Install Codex CLI](00-ai-cli-installation/install-codex-cli.md) / [Install Claude CLI](00-ai-cli-installation/install-claude-cli.md)
+2. [Environment Bootstrap Checklist](00-ai-cli-installation/environment-bootstrap-checklist.md)
+3. [AI General Rules](01-ai-permission-governance/ai-general-rules.md) —— 開放全域權限
+4. [SSH Basic Operations](02-project-entry-and-remote-dev/ssh-basic-operations.md) → [SSH + tmux Persistent Session](02-project-entry-and-remote-dev/ssh-tmux-persistent-session.md) → [SSH + tmux AI Project Launcher](02-project-entry-and-remote-dev/ssh-tmux-ai-project-launcher.md) —— 分專案分任務
 
 開始讓 AI 接手專案前，先看：
 
 - [GitHub Project Discovery](02-project-entry-and-remote-dev/github-project-discovery.md)
-- [AI General Rules](03-ai-permission-governance/ai-general-rules.md)
-- [Personal AI Development Skill](04-ai-collaboration-workflow/personal-ai-development-skill.md)
-
-遠端長任務前，依序看：
-
-- [SSH Basic Operations](02-project-entry-and-remote-dev/ssh-basic-operations.md)
-- [SSH + tmux Persistent Session](02-project-entry-and-remote-dev/ssh-tmux-persistent-session.md)
-- [SSH + tmux AI Project Launcher](02-project-entry-and-remote-dev/ssh-tmux-ai-project-launcher.md)
+- [Personal AI Development Skill](03-ai-collaboration-workflow/personal-ai-development-skill.md)
 
 碰到平台限制或部署邊界時，先看：
 
-- [Xcode Wireless Deploy Limitation](05-apple-platform-limitations/xcode-wireless-deploy-limitation.md)
+- [Xcode Wireless Deploy Limitation](04-apple-platform-limitations/xcode-wireless-deploy-limitation.md)
