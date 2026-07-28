@@ -49,6 +49,7 @@
 | [SSH + tmux Persistent Session](02-project-entry-and-remote-dev/ssh-tmux-persistent-session.md) | 用 tmux 保持遠端 AI 長任務不中斷 |
 | [Windows OpenSSH Server + WSL tmux Setup](02-project-entry-and-remote-dev/windows-openssh-wsl-setup.md) | Windows 11 安裝 OpenSSH Server、WSL Ubuntu + tmux，讓 Windows 也能當遠端 AI 節點 |
 | [SSH + tmux AI Project Launcher](02-project-entry-and-remote-dev/ssh-tmux-ai-project-launcher.md) | 遠端：SSH 進主機後用 `projects` / `proj` 選專案、分開 Claude/Codex tmux session、建立與刪除獨立 AI task |
+| [Share Local Server on LAN](02-project-entry-and-remote-dev/share-local-server-on-lan.md) | 讓同事在同一區網內連進你本機的 IIS Express debug 站台：binding、防火牆規則、驗證與收尾 |
 
 ### 03. AI Collaboration Workflow
 
@@ -89,7 +90,8 @@ my-devops-playbook/
 │   ├── ssh-basic-operations.md
 │   ├── ssh-tmux-persistent-session.md
 │   ├── windows-openssh-wsl-setup.md
-│   └── ssh-tmux-ai-project-launcher.md
+│   ├── ssh-tmux-ai-project-launcher.md
+│   └── share-local-server-on-lan.md
 ├── 03-ai-collaboration-workflow/
 │   └── personal-ai-development-skill.md
 ├── 04-apple-platform-limitations/
